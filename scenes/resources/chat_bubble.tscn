@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://cn12y1xfi4whh"]
+
+[ext_resource type="Material" uid="uid://c70pk3ebl6xkv" path="res://assets/shaders/dither/bayer_level2_8x8.tres" id="1_gmev1"]
+[ext_resource type="Script" uid="uid://ca2u55frr6seq" path="res://scenes/resources/chat_bubble.gd" id="1_xftsg"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="2_fwy0m"]
+[ext_resource type="Shader" uid="uid://cyl7kfuv1qxbn" path="res://wavy.tres" id="3_fwy0m"]
+[ext_resource type="Texture2D" uid="uid://y2naps6582gr" path="res://assets/text/message_box_2_smaller.png" id="3_gmev1"]
+[ext_resource type="FontFile" uid="uid://bdeptcmutijon" path="res://assets/text/HelveticaNeueLight.otf" id="5_fwy0m"]
+[ext_resource type="FontFile" uid="uid://bwo00dd4uhmhv" path="res://assets/text/HelveticaNeueMedium.otf" id="7_alr1f"]
+[ext_resource type="FontFile" uid="uid://b5ga7mfohvevb" path="res://assets/text/HelveticaNeueMediumItalic.otf" id="8_8d0k0"]
+[ext_resource type="FontFile" uid="uid://wup5m2kjfn46" path="res://assets/text/HelveticaNeueLightItalic.otf" id="9_aiqxb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gmev1"]
+shader = ExtResource("3_fwy0m")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.6
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_fwy0m")
+
+[node name="ChatBubble" type="Control" unique_id=1107991084]
+z_index = 3
+material = ExtResource("1_gmev1")
+layout_mode = 3
+anchor_right = 0.6119792
+anchor_bottom = 0.43364197
+offset_right = 140.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_xftsg")
+metadata/_edit_use_anchors_ = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=771630511]
+show_behind_parent = true
+z_index = -2
+material = ExtResource("1_gmev1")
+use_parent_material = true
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 1
+offset_right = 833.0
+offset_bottom = 318.0
+size_flags_stretch_ratio = 0.0
+texture = ExtResource("3_gmev1")
+draw_center = false
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect" unique_id=917917078]
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 30
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect/MarginContainer" unique_id=772760574]
+show_behind_parent = true
+z_index = 4
+material = SubResource("ShaderMaterial_gmev1")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("5_fwy0m")
+theme_override_fonts/bold_font = ExtResource("7_alr1f")
+theme_override_fonts/bold_italics_font = ExtResource("8_8d0k0")
+theme_override_fonts/italics_font = ExtResource("9_aiqxb")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 2
+horizontal_alignment = 2
+vertical_alignment = 1

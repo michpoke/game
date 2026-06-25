@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DialogicStyle" format=3 uid="uid://dwc20el5f35ov"]
+
+[ext_resource type="PackedScene" uid="uid://cgvexdmwwoqoj" path="res://scenes/message box/CustomMessageBox/DefaultLayoutBase/DefaultLayoutBase/custom_default_layout_base.tscn" id="1_6mbpx"]
+[ext_resource type="Script" uid="uid://bwg6yncmh2cml" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="2_36h7a"]
+[ext_resource type="PackedScene" uid="uid://sytt4ttm7pwm" path="res://scenes/resources/chat_window.tscn" id="3_j7tn5"]
+[ext_resource type="Script" uid="uid://dv08k6ljua6fm" path="res://addons/dialogic/Resources/dialogic_style.gd" id="11_xykh5"]
+
+[sub_resource type="Resource" id="Resource_xyerm"]
+script = ExtResource("2_36h7a")
+scene = ExtResource("1_6mbpx")
+
+[sub_resource type="Resource" id="Resource_j7tn5"]
+script = ExtResource("2_36h7a")
+scene = ExtResource("3_j7tn5")
+
+[resource]
+script = ExtResource("11_xykh5")
+name = "message box"
+layer_list = Array[String](["10"])
+layer_info = {
+"": SubResource("Resource_xyerm"),
+"10": SubResource("Resource_j7tn5")
+}
+metadata/_latest_layer = "10"

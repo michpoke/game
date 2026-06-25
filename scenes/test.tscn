@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://n0g315i4uio2"]
+
+[ext_resource type="Script" uid="uid://dfimvsw0w131" path="res://scenes/resources/test.gd" id="1_74lek"]
+[ext_resource type="PackedScene" uid="uid://h87rd28ql5op" path="res://scenes/resources/photo_window.tscn" id="2_iyx0m"]
+[ext_resource type="PackedScene" uid="uid://dakwlww4dixln" path="res://scenes/resources/text_window.tscn" id="3_iyx0m"]
+[ext_resource type="PackedScene" uid="uid://bwmgftwa0jneu" path="res://scenes/resources/folder_window.tscn" id="4_74lek"]
+
+[node name="Test" type="Control" unique_id=908306496]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_74lek")
+
+[node name="PhotoWindow" parent="." unique_id=372876636 instance=ExtResource("2_iyx0m")]
+visible = false
+layout_mode = 1
+
+[node name="TextWindow" parent="." unique_id=1330465347 instance=ExtResource("3_iyx0m")]
+visible = false
+layout_mode = 1
+offset_left = 671.0
+offset_top = 71.0
+offset_right = 184.0
+offset_bottom = 161.0
+
+[node name="FolderWindow" parent="." unique_id=347264701 instance=ExtResource("4_74lek")]
+layout_mode = 1

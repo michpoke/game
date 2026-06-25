@@ -1,0 +1,195 @@
+[gd_scene format=3 uid="uid://exl51vvhi821"]
+
+[ext_resource type="Script" uid="uid://3q0x1vcwlj4p" path="res://menu_overlay.gd" id="1_5n3t8"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="2_5n3t8"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="2_chaoq"]
+[ext_resource type="FontFile" uid="uid://dat2gthm4uhbp" path="res://assets/fonts/static/Newsreader_60pt-Medium.ttf" id="3_7ffsb"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="3_8go2m"]
+[ext_resource type="FontFile" uid="uid://btrjlica28gqy" path="res://assets/fonts/static/Newsreader_60pt-Bold.ttf" id="4_uvs7j"]
+[ext_resource type="Texture2D" uid="uid://btcvilduu1431" path="res://assets/background/blackborder.png" id="7_uvs7j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1mrgb"]
+shader = ExtResource("2_chaoq")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.17
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("3_8go2m")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mrgb"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0)
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aeywv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y4a0l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5n3t8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8go2m"]
+shader = ExtResource("2_chaoq")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.17
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("3_8go2m")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ts1dl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m87mp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_48bnt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xvgs6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gtib3"]
+shader = ExtResource("2_chaoq")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.17
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("3_8go2m")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_826pb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xethm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xb7sg"]
+
+[node name="MenuOverlay" type="CanvasLayer" unique_id=508781416]
+layer = 10
+script = ExtResource("1_5n3t8")
+
+[node name="visible_space" type="MarginContainer" parent="." unique_id=1090775677]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -388.0
+offset_top = -304.0
+offset_right = 391.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="menubuttoncontainer" type="VBoxContainer" parent="visible_space" unique_id=668683363]
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="menu" type="Button" parent="visible_space/menubuttoncontainer" unique_id=1443849121]
+material = SubResource("ShaderMaterial_1mrgb")
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/outline_size = 11
+theme_override_fonts/font = ExtResource("3_7ffsb")
+theme_override_font_sizes/font_size = 31
+theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_aeywv")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_y4a0l")
+text = "menu"
+
+[node name="Panel" type="Panel" parent="visible_space" unique_id=1038087]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_5n3t8")
+
+[node name="menucontainer" type="VBoxContainer" parent="visible_space/Panel" unique_id=371444095]
+z_index = 1
+material = ExtResource("2_5n3t8")
+layout_mode = 0
+offset_left = -39.0
+offset_top = 242.0
+offset_right = 40.0
+offset_bottom = 366.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="save" type="Button" parent="visible_space/Panel/menucontainer" unique_id=1767100208]
+material = SubResource("ShaderMaterial_8go2m")
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ts1dl")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_m87mp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_48bnt")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_xvgs6")
+text = "save"
+
+[node name="load" type="Button" parent="visible_space/Panel/menucontainer" unique_id=1823447300]
+material = SubResource("ShaderMaterial_8go2m")
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ts1dl")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_m87mp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_48bnt")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_xvgs6")
+text = "load
+"
+
+[node name="quit" type="Button" parent="visible_space/Panel/menucontainer" unique_id=776459344]
+material = SubResource("ShaderMaterial_gtib3")
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxEmpty_826pb")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xethm")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xb7sg")
+text = "quit"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=94431641]
+visible = false
+modulate = Color(0, 0, 0, 1)
+material = ExtResource("2_5n3t8")
+anchors_preset = -1
+anchor_right = 0.034722224
+anchor_bottom = 0.061728396
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("7_uvs7j")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="mouse_entered" from="visible_space/menubuttoncontainer/menu" to="." method="_on_menu_mouse_entered"]
+[connection signal="mouse_exited" from="visible_space/menubuttoncontainer/menu" to="." method="_on_menu_mouse_exited"]
+[connection signal="pressed" from="visible_space/menubuttoncontainer/menu" to="." method="_on_menu_button_pressed"]
+[connection signal="mouse_entered" from="visible_space/Panel/menucontainer/save" to="." method="_on_save_mouse_entered"]
+[connection signal="mouse_exited" from="visible_space/Panel/menucontainer/save" to="." method="_on_save_mouse_exited"]
+[connection signal="pressed" from="visible_space/Panel/menucontainer/save" to="." method="_on_save_pressed"]
+[connection signal="mouse_entered" from="visible_space/Panel/menucontainer/load" to="." method="_on_load_mouse_entered"]
+[connection signal="mouse_exited" from="visible_space/Panel/menucontainer/load" to="." method="_on_load_mouse_exited"]
+[connection signal="pressed" from="visible_space/Panel/menucontainer/load" to="." method="_on_load_pressed"]
+[connection signal="mouse_entered" from="visible_space/Panel/menucontainer/quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="mouse_exited" from="visible_space/Panel/menucontainer/quit" to="." method="_on_quit_mouse_exited"]
+[connection signal="pressed" from="visible_space/Panel/menucontainer/quit" to="." method="_on_quit_pressed"]

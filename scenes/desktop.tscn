@@ -1,0 +1,1113 @@
+[gd_scene format=3 uid="uid://buivkvob7d0ia"]
+
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="1_dcrhm"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="2_ox5hf"]
+[ext_resource type="Texture2D" uid="uid://dha2euw0nnokx" path="res://assets/text/desktop_bar.png" id="3_6ajoh"]
+[ext_resource type="Material" uid="uid://c70pk3ebl6xkv" path="res://assets/shaders/dither/bayer_level2_8x8.tres" id="3_ox5hf"]
+[ext_resource type="Script" uid="uid://c6e0wbumbp6dc" path="res://scenes/desktop.gd" id="3_veafp"]
+[ext_resource type="Texture2D" uid="uid://bmjk44ilwolbi" path="res://assets/6ed371e488b55ea4100eb9aedb3b0779.jpg" id="4_dcrhm"]
+[ext_resource type="Texture2D" uid="uid://buwd41u4y12i0" path="res://assets/windows/toolbar.png" id="4_pkmwo"]
+[ext_resource type="Texture2D" uid="uid://c1cppfamd1ul" path="res://assets/icons/volume.png" id="5_3liqb"]
+[ext_resource type="Texture2D" uid="uid://vujdi88u7ncs" path="res://assets/icons/mail.png" id="5_vcvwy"]
+[ext_resource type="PackedScene" uid="uid://sytt4ttm7pwm" path="res://scenes/resources/chat_window.tscn" id="6_6ajoh"]
+[ext_resource type="Texture2D" uid="uid://5ssgjl6r80tq" path="res://assets/icons/folder.png" id="6_nikxi"]
+[ext_resource type="Texture2D" uid="uid://b8hqbjy47jgwt" path="res://assets/icons/search.png" id="6_wbccy"]
+[ext_resource type="Texture2D" uid="uid://c2xlmbvu2ugl2" path="res://assets/icons/battery_full.png" id="7_iamu6"]
+[ext_resource type="Texture2D" uid="uid://damkuu3nx1mlq" path="res://assets/icons/photos.png" id="7_q2hki"]
+[ext_resource type="Texture2D" uid="uid://c3t4u5oakuowx" path="res://assets/icons/chat.png" id="8_nd1jb"]
+[ext_resource type="Texture2D" uid="uid://cwplc1khn4vcn" path="res://assets/icons/reminders.png" id="10_nd1jb"]
+[ext_resource type="Texture2D" uid="uid://bd7vfhneyj1jq" path="res://assets/icons/trash.png" id="11_yhf0c"]
+[ext_resource type="Texture2D" uid="uid://dblueq5yyadev" path="res://assets/icons/safari.png" id="15_wbccy"]
+[ext_resource type="Texture2D" uid="uid://b4esk5k57rhc" path="res://assets/icons/de shortcut.jpg" id="19_0542q"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="20_3erbe"]
+[ext_resource type="Texture2D" uid="uid://btcvilduu1431" path="res://assets/background/blackborder.png" id="21_v4dq8"]
+[ext_resource type="PackedScene" uid="uid://exl51vvhi821" path="res://scenes/menu_overlay.tscn" id="22_v4dq8"]
+[ext_resource type="Script" uid="uid://bq7psjdnjtp2w" path="res://scenes/safari.gd" id="23_p4n4d"]
+[ext_resource type="Texture2D" uid="uid://cq3acerkgge31" path="res://assets/windows/asset_desktopwindows.png" id="24_swsq6"]
+[ext_resource type="Script" uid="uid://ecbtoinab68f" path="res://scenes/posts/postfeed.gd" id="25_p4n4d"]
+[ext_resource type="Texture2D" uid="uid://b3cdpthgqtgr8" path="res://assets/gui/arrow_black.png" id="26_57nbh"]
+[ext_resource type="Script" uid="uid://buyvinsyslt37" path="res://scenes/posts/textpost.gd" id="27_djqaf"]
+[ext_resource type="Texture2D" uid="uid://baejot3ek3ay0" path="res://assets/gui/rectangle1.png" id="28_2qvfh"]
+[ext_resource type="Texture2D" uid="uid://pf4n0n87ccc8" path="res://assets/icons/bunny_small.png" id="29_0b5kg"]
+[ext_resource type="Texture2D" uid="uid://q8halc8183s0" path="res://assets/text/message_box_2_kai_black_flipped.png" id="30_libl6"]
+[ext_resource type="Theme" uid="uid://cg5dh8drc6tv8" path="res://themes/tumblr_text.tres" id="31_rimpq"]
+[ext_resource type="FontFile" uid="uid://dat2gthm4uhbp" path="res://assets/fonts/static/Newsreader_60pt-Medium.ttf" id="32_w3hjv"]
+[ext_resource type="FontFile" uid="uid://b5vvpmmsct3sx" path="res://assets/fonts/static/Newsreader_9pt-Light.ttf" id="33_0wewi"]
+[ext_resource type="Texture2D" uid="uid://bc6i63tvt52ql" path="res://assets/icons/bunny.png" id="34_lmyf6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dcrhm"]
+shader = ExtResource("1_dcrhm")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.1
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_ox5hf")
+shader_parameter/light_color = Color(0.9955804, 0.99558026, 0.99558026, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = false
+
+[sub_resource type="Shader" id="Shader_vxgxr"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+// ── Squiggle uniforms ──────────────────────────────────────────────
+group_uniforms Squiggle;
+uniform vec2 scale = vec2(1.0, 1.0);
+uniform float strength = 1.0;
+uniform float fps = 6.0;
+uniform sampler2D noise : filter_linear, repeat_enable;
+group_uniforms;
+
+// ── Dither uniforms ────────────────────────────────────────────────
+group_uniforms Dither;
+uniform vec4 light_color : source_color;
+uniform vec4 dark_color  : source_color;
+uniform bool is_inverted;
+group_uniforms;
+
+// ── Bayer 8x8 matrix (unchanged from your original) ───────────────
+struct Array8 { float[8] col; };
+const Array8 m8c1 = Array8({0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375});
+const Array8 m8c2 = Array8({0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375});
+const Array8 m8c3 = Array8({0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375});
+const Array8 m8c4 = Array8({0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375});
+const Array8 m8c5 = Array8({0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125});
+const Array8 m8c6 = Array8({0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125});
+const Array8 m8c7 = Array8({0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125});
+const Array8 m8c8 = Array8({0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125});
+const Array8[8] BAYER_8x8 = {m8c1, m8c2, m8c3, m8c4, m8c5, m8c6, m8c7, m8c8};
+const float matrix_size = 8.0;
+
+// ── Vertex (squiggle only — dither doesn't need vertex stage) ──────
+varying vec4 modulate;
+varying vec2 noise_uv;
+
+void vertex() {
+    modulate = COLOR;
+    noise_uv = (VERTEX - MODEL_MATRIX[3].xy) / (vec2(textureSize(noise, 0)) * scale);
+}
+
+#define offset_multiplier vec2(PI, E)
+
+void fragment() {
+    // ── Step 1: wobbly UV distortion ──────────────────────────────
+    vec2 noise_offset = vec2(floor(TIME * fps)) * offset_multiplier;
+    float noise_sample = texture(noise, noise_uv + noise_offset).r * 4.0 * PI;
+    vec2 direction = vec2(cos(noise_sample), sin(noise_sample));
+    vec2 squiggle_uv = UV + direction * strength * 0.005;
+
+    // ── Step 2: sample texture at distorted UV ────────────────────
+    COLOR = texture(TEXTURE, squiggle_uv) * modulate;
+
+    // ── Step 3: gamma correction ──────────────────────────────────
+    vec3 linear = pow(COLOR.rgb, vec3(2.2));
+    COLOR.rgb = linear;
+
+    // ── Step 4: convert to grayscale (luma) ───────────────────────
+    float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+
+    // ── Step 5: bayer dither ──────────────────────────────────────
+    vec2 bayer = mod(vec2(FRAGCOORD.xy), vec2(matrix_size));
+    vec3 new_color;
+
+    if (is_inverted) {
+        new_color = step(1.0 - BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    } else {
+        new_color = step(BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    }
+
+    // ── Step 6: apply palette ─────────────────────────────────────
+    COLOR.rgb = (new_color == vec3(1.0)) ? light_color.rgb : dark_color.rgb;
+
+    // preserve original alpha (so transparent areas stay transparent)
+    COLOR.a = texture(TEXTURE, squiggle_uv).a * modulate.a;
+}"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6r5gw"]
+load_path = "res://.godot/imported/super perlin 2 - 512x512.png-fd05d49dbf864631c70c9ec7985d6e71.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3liqb"]
+resource_local_to_scene = true
+shader = SubResource("Shader_vxgxr")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.57
+shader_parameter/fps = 6.0
+shader_parameter/noise = SubResource("CompressedTexture2D_6r5gw")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="Shader" id="Shader_yhf0c"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+// ── Squiggle uniforms ──────────────────────────────────────────────
+group_uniforms Squiggle;
+uniform vec2 scale = vec2(1.0, 1.0);
+uniform float strength = 1.0;
+uniform float fps = 6.0;
+uniform sampler2D noise : filter_linear, repeat_enable;
+group_uniforms;
+
+// ── Dither uniforms ────────────────────────────────────────────────
+group_uniforms Dither;
+uniform vec4 light_color : source_color;
+uniform vec4 dark_color  : source_color;
+uniform bool is_inverted;
+group_uniforms;
+
+// ── Bayer 8x8 matrix (unchanged from your original) ───────────────
+struct Array8 { float[8] col; };
+const Array8 m8c1 = Array8({0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375});
+const Array8 m8c2 = Array8({0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375});
+const Array8 m8c3 = Array8({0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375});
+const Array8 m8c4 = Array8({0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375});
+const Array8 m8c5 = Array8({0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125});
+const Array8 m8c6 = Array8({0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125});
+const Array8 m8c7 = Array8({0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125});
+const Array8 m8c8 = Array8({0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125});
+const Array8[8] BAYER_8x8 = {m8c1, m8c2, m8c3, m8c4, m8c5, m8c6, m8c7, m8c8};
+const float matrix_size = 8.0;
+
+// ── Vertex (squiggle only — dither doesn't need vertex stage) ──────
+varying vec4 modulate;
+varying vec2 noise_uv;
+
+void vertex() {
+    modulate = COLOR;
+    noise_uv = (VERTEX - MODEL_MATRIX[3].xy) / (vec2(textureSize(noise, 0)) * scale);
+}
+
+#define offset_multiplier vec2(PI, E)
+
+void fragment() {
+    // ── Step 1: wobbly UV distortion ──────────────────────────────
+    vec2 noise_offset = vec2(floor(TIME * fps)) * offset_multiplier;
+    float noise_sample = texture(noise, noise_uv + noise_offset).r * 4.0 * PI;
+    vec2 direction = vec2(cos(noise_sample), sin(noise_sample));
+    vec2 squiggle_uv = UV + direction * strength * 0.005;
+
+    // ── Step 2: sample texture at distorted UV ────────────────────
+    COLOR = texture(TEXTURE, squiggle_uv) * modulate;
+
+    // ── Step 3: gamma correction ──────────────────────────────────
+    vec3 linear = pow(COLOR.rgb, vec3(2.2));
+    COLOR.rgb = linear;
+
+    // ── Step 4: convert to grayscale (luma) ───────────────────────
+    float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+
+    // ── Step 5: bayer dither ──────────────────────────────────────
+    vec2 bayer = mod(vec2(FRAGCOORD.xy), vec2(matrix_size));
+    vec3 new_color;
+
+    if (is_inverted) {
+        new_color = step(1.0 - BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    } else {
+        new_color = step(BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    }
+
+    // ── Step 6: apply palette ─────────────────────────────────────
+    COLOR.rgb = (new_color == vec3(1.0)) ? light_color.rgb : dark_color.rgb;
+
+    // preserve original alpha (so transparent areas stay transparent)
+    COLOR.a = texture(TEXTURE, squiggle_uv).a * modulate.a;
+}"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vxgxr"]
+load_path = "res://.godot/imported/super perlin 2 - 512x512.png-fd05d49dbf864631c70c9ec7985d6e71.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6r5gw"]
+resource_local_to_scene = true
+shader = SubResource("Shader_yhf0c")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 1.0
+shader_parameter/fps = 6.0
+shader_parameter/noise = SubResource("CompressedTexture2D_vxgxr")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="Theme" id="Theme_y4qwl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wcbx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1xk3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f2cgq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ak2pc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8vj20"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5yvn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ve25t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_slfx2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3q6tl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03e5w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xf3qq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j22wa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ubkpx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g55hv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oepbn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6nsrr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r12f1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iu1mn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0n37s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jegi6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_anmqh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05p1e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rl5cd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p4n4d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_57nbh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_djqaf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2qvfh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0b5kg"]
+
+[sub_resource type="Shader" id="Shader_s3v2b"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+// ── Squiggle uniforms ──────────────────────────────────────────────
+group_uniforms Squiggle;
+uniform vec2 scale = vec2(1.0, 1.0);
+uniform float strength = 1.0;
+uniform float fps = 6.0;
+uniform sampler2D noise : filter_linear, repeat_enable;
+group_uniforms;
+
+// ── Dither uniforms ────────────────────────────────────────────────
+group_uniforms Dither;
+uniform vec4 light_color : source_color;
+uniform vec4 dark_color  : source_color;
+uniform bool is_inverted;
+group_uniforms;
+
+// ── Bayer 8x8 matrix (unchanged from your original) ───────────────
+struct Array8 { float[8] col; };
+const Array8 m8c1 = Array8({0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375});
+const Array8 m8c2 = Array8({0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375});
+const Array8 m8c3 = Array8({0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375});
+const Array8 m8c4 = Array8({0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375});
+const Array8 m8c5 = Array8({0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125});
+const Array8 m8c6 = Array8({0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125});
+const Array8 m8c7 = Array8({0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125});
+const Array8 m8c8 = Array8({0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125});
+const Array8[8] BAYER_8x8 = {m8c1, m8c2, m8c3, m8c4, m8c5, m8c6, m8c7, m8c8};
+const float matrix_size = 8.0;
+
+// ── Vertex (squiggle only — dither doesn't need vertex stage) ──────
+varying vec4 modulate;
+varying vec2 noise_uv;
+
+void vertex() {
+    modulate = COLOR;
+    noise_uv = (VERTEX - MODEL_MATRIX[3].xy) / (vec2(textureSize(noise, 0)) * scale);
+}
+
+#define offset_multiplier vec2(PI, E)
+
+void fragment() {
+    // ── Step 1: wobbly UV distortion ──────────────────────────────
+    vec2 noise_offset = vec2(floor(TIME * fps)) * offset_multiplier;
+    float noise_sample = texture(noise, noise_uv + noise_offset).r * 4.0 * PI;
+    vec2 direction = vec2(cos(noise_sample), sin(noise_sample));
+    vec2 squiggle_uv = UV + direction * strength * 0.005;
+
+    // ── Step 2: sample texture at distorted UV ────────────────────
+    COLOR = texture(TEXTURE, squiggle_uv) * modulate;
+
+    // ── Step 3: gamma correction ──────────────────────────────────
+    vec3 linear = pow(COLOR.rgb, vec3(2.2));
+    COLOR.rgb = linear;
+
+    // ── Step 4: convert to grayscale (luma) ───────────────────────
+    float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+
+    // ── Step 5: bayer dither ──────────────────────────────────────
+    vec2 bayer = mod(vec2(FRAGCOORD.xy), vec2(matrix_size));
+    vec3 new_color;
+
+    if (is_inverted) {
+        new_color = step(1.0 - BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    } else {
+        new_color = step(BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    }
+
+    // ── Step 6: apply palette ─────────────────────────────────────
+    COLOR.rgb = (new_color == vec3(1.0)) ? light_color.rgb : dark_color.rgb;
+
+    // preserve original alpha (so transparent areas stay transparent)
+    COLOR.a = texture(TEXTURE, squiggle_uv).a * modulate.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_swsq6"]
+resource_local_to_scene = true
+shader = SubResource("Shader_s3v2b")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.37
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_ox5hf")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_swsq6"]
+bg_color = Color(0.33288068, 0.3328807, 0.33288056, 0.83137256)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v4dq8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1dbpt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v08ca"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ifjoy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0ovxq"]
+
+[node name="desktop" type="Control" unique_id=775556774]
+material = SubResource("ShaderMaterial_dcrhm")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_veafp")
+
+[node name="top bar" type="TextureRect" parent="." unique_id=1202692476]
+z_index = 1
+material = ExtResource("20_3erbe")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -570.5
+offset_top = -16.0
+offset_right = 581.0
+offset_bottom = 38.0
+grow_horizontal = 2
+texture = ExtResource("4_pkmwo")
+
+[node name="TextureButton" type="TextureButton" parent="top bar" unique_id=1424266347]
+use_parent_material = true
+layout_mode = 0
+offset_left = 1098.0
+offset_top = 22.0
+offset_right = 1167.0
+offset_bottom = 62.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("5_3liqb")
+
+[node name="TextureButton2" type="TextureButton" parent="top bar" unique_id=426805874]
+use_parent_material = true
+layout_mode = 0
+offset_left = 1061.5
+offset_top = 17.0
+offset_right = 1130.5
+offset_bottom = 77.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("6_wbccy")
+
+[node name="battery" type="TextureButton" parent="top bar" unique_id=1347848756]
+use_parent_material = true
+layout_mode = 0
+offset_left = 1005.5
+offset_top = 25.0
+offset_right = 1074.5
+offset_bottom = 85.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("7_iamu6")
+
+[node name="toolbar" type="TextureRect" parent="." unique_id=984615791]
+z_index = 2
+material = SubResource("ShaderMaterial_3liqb")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -348.33334
+offset_top = -112.0
+offset_right = 348.33334
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_6ajoh")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="TextureButton" type="TextureButton" parent="toolbar" unique_id=1438313678]
+use_parent_material = true
+layout_mode = 0
+offset_left = 578.3334
+offset_top = 20.0
+offset_right = 686.3334
+offset_bottom = 92.0
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("5_vcvwy")
+ignore_texture_size = true
+
+[node name="TextureButton2" type="TextureButton" parent="toolbar" unique_id=1932967110]
+use_parent_material = true
+layout_mode = 0
+offset_left = 224.33334
+offset_top = 21.0
+offset_right = 332.33334
+offset_bottom = 93.0
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("6_nikxi")
+ignore_texture_size = true
+
+[node name="TextureButton3" type="TextureButton" parent="toolbar" unique_id=1250805225]
+use_parent_material = true
+layout_mode = 0
+offset_left = 329.33334
+offset_top = 20.0
+offset_right = 437.33334
+offset_bottom = 92.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("7_q2hki")
+ignore_texture_size = true
+
+[node name="TextureButton5" type="TextureButton" parent="toolbar" unique_id=1122370841]
+use_parent_material = true
+layout_mode = 0
+offset_left = 474.3333
+offset_top = 11.0
+offset_right = 582.3333
+offset_bottom = 83.0
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("10_nd1jb")
+ignore_texture_size = true
+
+[node name="TextureButton6" type="TextureButton" parent="toolbar" unique_id=1177393104]
+material = SubResource("ShaderMaterial_6r5gw")
+layout_mode = 0
+offset_left = 404.3333
+offset_top = 7.0
+offset_right = 512.3333
+offset_bottom = 79.0
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("11_yhf0c")
+ignore_texture_size = true
+
+[node name="background" type="TextureRect" parent="." unique_id=1247415985]
+z_index = -15
+material = ExtResource("3_ox5hf")
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -50.0
+offset_right = -1.0
+offset_bottom = 167.27997
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_dcrhm")
+expand_mode = 5
+metadata/_edit_lock_ = true
+
+[node name="icons" type="GridContainer" parent="." unique_id=1720264228]
+z_as_relative = false
+material = ExtResource("3_ox5hf")
+use_parent_material = true
+layout_mode = 0
+offset_left = 19.000002
+offset_top = 81.0
+offset_right = 755.6666
+offset_bottom = 1774.3333
+scale = Vector2(0.3, 0.3)
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="TextureButton" type="TextureButton" parent="icons" unique_id=225883238]
+use_parent_material = true
+layout_mode = 2
+texture_normal = ExtResource("19_0542q")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=969679885]
+visible = false
+modulate = Color(0, 0, 0, 1)
+z_index = -5
+material = ExtResource("20_3erbe")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.034722224
+anchor_bottom = 0.061728396
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("21_v4dq8")
+metadata/_edit_use_anchors_ = true
+
+[node name="Safari" type="Control" parent="." unique_id=1654397902]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 544.0
+offset_top = 18.0
+offset_right = -25.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("23_p4n4d")
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari" unique_id=1484991478]
+layout_mode = 0
+offset_top = 37.0
+offset_right = 593.0
+offset_bottom = 503.0
+
+[node name="TextureRect" type="TextureRect" parent="Safari/MarginContainer" unique_id=352443745]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+texture = ExtResource("24_swsq6")
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer" unique_id=1373306439]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 80
+
+[node name="Postfeed" type="Control" parent="Safari/MarginContainer/MarginContainer" unique_id=442629284]
+clip_contents = true
+layout_mode = 2
+script = ExtResource("25_p4n4d")
+
+[node name="ScrollHintArrow" type="TextureRect" parent="Safari/MarginContainer/MarginContainer/Postfeed" unique_id=1746766073]
+material = ExtResource("20_3erbe")
+layout_mode = 0
+offset_left = 479.0
+offset_top = 275.0
+offset_right = 494.0
+offset_bottom = 289.0
+size_flags_horizontal = 10
+size_flags_vertical = 10
+texture = ExtResource("26_57nbh")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed" unique_id=1937956247]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_y4qwl")
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer" unique_id=910363786]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 620
+
+[node name="Askpost" type="Control" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer" unique_id=1895856752]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="postwindow" type="Control" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost" unique_id=787249726]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 78.0
+offset_bottom = 644.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("27_djqaf")
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow" unique_id=2076831705]
+layout_mode = 0
+offset_right = 502.0
+offset_bottom = 504.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2" unique_id=1715995460]
+z_index = -3
+material = ExtResource("20_3erbe")
+layout_mode = 2
+texture = ExtResource("28_2qvfh")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2" unique_id=444786847]
+layout_mode = 2
+theme_override_constants/separation = -6
+
+[node name="user" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer" unique_id=1938994211]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/user" unique_id=848614269]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/user/MarginContainer" unique_id=1703393395]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "some kind of username"
+icon = ExtResource("29_0b5kg")
+flat = true
+
+[node name="ask" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer" unique_id=1613996663]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask" unique_id=2052887269]
+layout_mode = 2
+theme_override_constants/margin_left = -3
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = -21
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask" unique_id=237973368]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer" unique_id=781492521]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 29
+
+[node name="bubble" type="NinePatchRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer" unique_id=103835496]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+texture = ExtResource("30_libl6")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer/bubble" unique_id=1268177945]
+layout_mode = 0
+offset_left = 33.0
+offset_top = -2.0
+offset_right = 279.0
+offset_bottom = 144.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 23
+
+[node name="ask" type="VBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer/bubble/MarginContainer" unique_id=686936090]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 23
+
+[node name="username" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer/bubble/MarginContainer/ask" unique_id=2057231303]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+theme = ExtResource("31_rimpq")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/selection_color = Color(0.1, 0.1, 1, 0.8)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 13
+theme_override_fonts/bold_font = ExtResource("32_w3hjv")
+bbcode_enabled = true
+text = "[b][username] [/b]asked:"
+fit_content = true
+
+[node name="content" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer/bubble/MarginContainer/ask" unique_id=1590484072]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/normal_font = ExtResource("33_0wewi")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2wcbx")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p1xk3")
+text = "i have so much to say. like genuinely so muchhblahblahblahblahblahblahblah"
+scroll_active = false
+
+[node name="MarginContainer2" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer" unique_id=816502468]
+layout_mode = 2
+theme_override_constants/margin_left = -51
+theme_override_constants/margin_top = -27
+
+[node name="icon" type="TextureRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/ask/HBoxContainer/MarginContainer2" unique_id=1635616369]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("34_lmyf6")
+stretch_mode = 2
+
+[node name="body text" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer" unique_id=1026207612]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 60
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/body text" unique_id=621703246]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "my body text..................... is so long....................................................................................................................................................................................."
+
+[node name="tags" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer" unique_id=1867801022]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/tags" unique_id=410758399]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.61339027, 0.61339027, 0.61339027, 1)
+theme_override_font_sizes/normal_font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxEmpty_f2cgq")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ak2pc")
+text = "#i just like #man #what are we doing"
+vertical_alignment = 2
+
+[node name="notes" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Askpost/postwindow/MarginContainer2/VBoxContainer/tags" unique_id=1953752925]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("31_rimpq")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8vj20")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_t5yvn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ve25t")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_slfx2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3q6tl")
+text = "24,000 notes"
+alignment = 2
+
+[node name="Imagepost" type="Control" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer" unique_id=1752048816]
+layout_mode = 2
+
+[node name="postwindow" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost" unique_id=2028343359]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -39.0
+offset_right = -132.0
+offset_bottom = 426.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("27_djqaf")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow" unique_id=1128098059]
+z_index = -3
+material = ExtResource("20_3erbe")
+layout_mode = 2
+texture = ExtResource("28_2qvfh")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow" unique_id=1980946342]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer" unique_id=640037348]
+layout_mode = 2
+theme_override_constants/separation = 31
+
+[node name="user" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer" unique_id=1247873980]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/user" unique_id=1013574532]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/user/MarginContainer" unique_id=168354242]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "some kind of username"
+icon = ExtResource("29_0b5kg")
+flat = true
+
+[node name="photo" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer" unique_id=606818906]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/photo" unique_id=653992402]
+layout_mode = 2
+texture = ExtResource("6_nikxi")
+stretch_mode = 2
+
+[node name="body text" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer" unique_id=519288569]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = -18
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/body text" unique_id=1608126417]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "my body text..................... is so long....................................................................................................................................................................................."
+
+[node name="tags" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer" unique_id=317531166]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/tags" unique_id=1078881352]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.61339027, 0.61339027, 0.61339027, 1)
+theme_override_font_sizes/normal_font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxEmpty_03e5w")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xf3qq")
+text = "#hello world :D"
+vertical_alignment = 2
+
+[node name="notes" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Imagepost/postwindow/MarginContainer/VBoxContainer/tags" unique_id=435410503]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("31_rimpq")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_j22wa")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ubkpx")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_g55hv")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_oepbn")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6nsrr")
+text = "24,000 notes"
+alignment = 2
+
+[node name="Textpost" type="Control" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer" unique_id=32653666]
+layout_mode = 2
+script = ExtResource("27_djqaf")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost" unique_id=665885296]
+layout_mode = 0
+offset_left = 77.0
+offset_top = -157.0
+offset_right = 475.0
+offset_bottom = 206.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2" unique_id=1686465801]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer" unique_id=1977485888]
+layout_mode = 2
+theme_override_constants/separation = 31
+
+[node name="user" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer" unique_id=1040590075]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/user" unique_id=2096140161]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/user/MarginContainer" unique_id=462982364]
+material = ExtResource("20_3erbe")
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "some kind of username"
+icon = ExtResource("29_0b5kg")
+flat = true
+
+[node name="title" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer" unique_id=959653901]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/title" unique_id=1961220489]
+layout_mode = 2
+theme = ExtResource("31_rimpq")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/selection_color = Color(0.1, 0.1, 1, 0.8)
+text = "title...."
+fit_content = true
+
+[node name="body text" type="MarginContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer" unique_id=1331597786]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = -18
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/body text" unique_id=709111114]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "my body text..................... is so long....................................................................................................................................................................................."
+
+[node name="tags" type="HBoxContainer" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer" unique_id=788889154]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/tags" unique_id=1606200110]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.61339027, 0.61339027, 0.61339027, 1)
+theme_override_font_sizes/normal_font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_r12f1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iu1mn")
+text = "#i just like #man #what are we doing"
+vertical_alignment = 2
+
+[node name="notes" type="Button" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2/MarginContainer/VBoxContainer/tags" unique_id=1435151853]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("31_rimpq")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_0n37s")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_jegi6")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_anmqh")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_05p1e")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_rl5cd")
+text = "24,000 notes"
+alignment = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Safari/MarginContainer/MarginContainer/Postfeed/ScrollContainer/VBoxContainer/Textpost/MarginContainer2" unique_id=1252024890]
+z_index = -3
+material = ExtResource("20_3erbe")
+layout_mode = 2
+texture = ExtResource("28_2qvfh")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+metadata/_edit_lock_ = true
+
+[node name="openbutton" type="TextureButton" parent="Safari" unique_id=538482745]
+z_index = 2
+material = SubResource("ShaderMaterial_6r5gw")
+layout_mode = 0
+offset_left = -193.00003
+offset_top = 540.0
+offset_right = -85.00003
+offset_bottom = 612.0
+scale = Vector2(0.65, 0.65)
+texture_normal = ExtResource("15_wbccy")
+ignore_texture_size = true
+
+[node name="closebutton" type="Button" parent="Safari" unique_id=600670568]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8181818
+anchor_top = 0.070063695
+anchor_right = 0.9639794
+anchor_bottom = 0.11464968
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p4n4d")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_57nbh")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_djqaf")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_2qvfh")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0b5kg")
+metadata/_edit_use_anchors_ = true
+
+[node name="chat_window" parent="." unique_id=478632925 instance=ExtResource("6_6ajoh")]
+
+[node name="TextureRect" parent="chat_window" index="0" unique_id=2001169542]
+material = SubResource("ShaderMaterial_swsq6")
+
+[node name="closebuttoncontainer" parent="chat_window/TextureRect" index="0" unique_id=214780308]
+offset_top = 5.9999695
+mouse_filter = 2
+
+[node name="closebutton" parent="chat_window/TextureRect/closebuttoncontainer" index="0" unique_id=1357971485]
+theme_override_styles/normal = SubResource("StyleBoxFlat_swsq6")
+
+[node name="VBoxContainer" parent="chat_window/TextureRect/MarginContainer/ScrollContainer" parent_id_path=PackedInt32Array(478632925, 80089143) index="0" unique_id=249510065]
+mouse_filter = 2
+
+[node name="ArrowContainerDown" parent="chat_window/TextureRect/MarginContainer" parent_id_path=PackedInt32Array(478632925, 773530749) index="1" unique_id=938478178]
+mouse_filter = 2
+
+[node name="ScrollHintArrow" parent="chat_window/TextureRect/MarginContainer/ArrowContainerDown" index="0" unique_id=53174468]
+mouse_filter = 2
+
+[node name="ArrowContainerUp" parent="chat_window/TextureRect/MarginContainer" parent_id_path=PackedInt32Array(478632925, 773530749) index="2" unique_id=482560798]
+mouse_filter = 2
+
+[node name="ScrollHintArrow" parent="chat_window/TextureRect/MarginContainer/ArrowContainerUp" index="0" unique_id=1002999797]
+mouse_filter = 2
+
+[node name="TextureRect" parent="chat_window/TextureRect" index="2" unique_id=1189270527]
+mouse_filter = 2
+
+[node name="fullscreenbuttoncontainer" parent="chat_window/TextureRect" index="3" unique_id=274756454]
+z_index = 2
+mouse_filter = 2
+
+[node name="chat_window_open_button" type="Button" parent="chat_window" unique_id=1229916260]
+top_level = true
+z_index = 2
+material = ExtResource("20_3erbe")
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -333.0
+offset_top = -108.0
+offset_right = -199.0
+offset_bottom = 16.25
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.8, 0.8)
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_v4dq8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1dbpt")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_v08ca")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ifjoy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0ovxq")
+icon = ExtResource("8_nd1jb")
+
+[node name="MenuOverlay" parent="." unique_id=508781416 instance=ExtResource("22_v4dq8")]
+visible = false
+
+[connection signal="pressed" from="Safari/openbutton" to="Safari" method="_on_openbutton_pressed"]
+[connection signal="pressed" from="Safari/closebutton" to="Safari" method="_on_closebutton_pressed"]
+[connection signal="pressed" from="chat_window/TextureRect/closebuttoncontainer/closebutton" to="chat_window" method="_on_closebutton_pressed"]
+[connection signal="pressed" from="chat_window/chat_window_open_button" to="chat_window" method="_on_chat_window_open_button_pressed"]
+
+[editable path="chat_window"]

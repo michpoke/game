@@ -1,0 +1,35 @@
+[style name="custom_portrait_textbox"]
+join blue (base_special_nothing) center
+join kai (base_special_drunk) center
+set {kai_emanata_animated} = "woozy"
+set {kai_emanata} = "blush_sweat"
+set {box_style} = "kai_talking"
+kai: ...!!!
+join blue (base_special_horny_smoking1) center [animation="Fade In"]
+kai: get--get the fuck--how did you even--
+set {box_style} = "blue_talking"
+blue (base_special_horny_smoking1): you left the door unlocked.
+set {box_style} = "kai_talking"
+kai (base_special_drunk): --..!!!! get--get-
+set {box_style} = "blue_talking"
+blue (base_special_horny_thinking): whoa!
+blue (base_special_horny_smoking3): careful, don't hurt yourself, now. [pause=0.5][lspeed=0.1] \:-)
+set {box_style} = "kai_talking"
+kai (base_special_drunk): [lspeed=0.1]get. [pause=0.2] out.
+set {box_style} = "blue_talking"
+blue (base_special_horny_smirk): why?
+set {box_style} = "kai_talking"
+kai (base_special_drunk): [lspeed=0.08]you're staring at me like--[pause=0.7]it's, it's, it's disgusting.
+set {box_style} = "blue_talking"
+blue (base_special_horny_smirk): like what?
+join narrator center [animation="Bounce In" length="0.3" wait="true" z_index="1"]
+narrator: [mood=neutral] ...you curl up tighter in the bathtub.
+narrator: [mood=angry] [lspeed=0.1].....why can't he just leave [pause=0.3] you [pause=0.3] [shake]alone....?
+leave narrator [animation="Fade Out" length="0.3" wait="true"]
+set {box_style} = "kai_talking"
+update kai (base_special_drunk) center
+kai: .......
+kai (base_special_drunk): [lspeed=0.1][font_size=10][mood=whispering]shut up...[/font_size]
+blue (base_special_horny_smoking1): ....
+blue (base_special_horny_smoking2): ....you're so cute.
+kai: ..!!!!

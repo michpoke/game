@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://cg5dh8drc6tv8"]
+
+[ext_resource type="FontFile" uid="uid://bkonwy1qq0eln" path="res://assets/fonts/static/Newsreader_60pt-Light.ttf" id="1_b7j3d"]
+
+[resource]
+default_font = ExtResource("1_b7j3d")
+default_font_size = 20

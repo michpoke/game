@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="DialogicStyle" format=3 uid="uid://cgkl0yjjuxtnw"]
+
+[ext_resource type="PackedScene" uid="uid://b6folf0ph302w" path="res://default_layout_base.tscn" id="1_accdn"]
+[ext_resource type="Script" uid="uid://bwg6yncmh2cml" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="2_rrdoy"]
+[ext_resource type="PackedScene" uid="uid://cnkeefs10kd7b" path="res://styles/narrator_box/narrator_textbox.tscn" id="3_accdn"]
+[ext_resource type="Script" uid="uid://dv08k6ljua6fm" path="res://addons/dialogic/Resources/dialogic_style.gd" id="4_eii7g"]
+
+[sub_resource type="Resource" id="Resource_schu2"]
+script = ExtResource("2_rrdoy")
+scene = ExtResource("1_accdn")
+overrides = {
+"global_font_color": "Color(0, 0, 0, 1)"
+}
+
+[sub_resource type="Resource" id="Resource_rrdoy"]
+script = ExtResource("2_rrdoy")
+scene = ExtResource("3_accdn")
+
+[resource]
+script = ExtResource("4_eii7g")
+name = "narrator_textbox"
+layer_list = Array[String](["10"])
+layer_info = {
+"": SubResource("Resource_schu2"),
+"10": SubResource("Resource_rrdoy")
+}
+metadata/_latest_layer = ""

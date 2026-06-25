@@ -1,0 +1,21 @@
+[style name="custom_portrait_textbox"]
+join kai (neutral) left [animation="Instant In" wait="true" z_index="2"]
+join blue (neutral) center
+kai (neutral): ..........
+set {box_style} = "blue_talking"
+blue (neutral): and if you wanna leave a tip
+set {blue_base} = "base_crossarm"
+blue (suggestive): [wave amp=30 freq=5]weed[/wave][pause=0.3]
+update kai (exhasperated) [length="0.3"]
+blue (suggestive): [pause=1.0][lspeed=0.1] [wave amp=20][i]really[/i][/wave].........[lspeed=0]appreciate it
+set {box_style} = "kai_talking"
+kai (exhasperated): .............
+set {kai_emanata} = "emanata_none"
+kai (angry): [aa=2.0][ns=2.0][lspeed=0.2] kill yourself
+set {box_style} = "blue_talking"
+set {blue_base} = "base_crossarm"
+blue (shocked): whoa!
+blue (poker_face): wow ok man
+set {box_style} = "kai_talking"
+set {kai_emanata} = "animated_emanata_woozy"
+kai (base_special_drunk): ~~~~...............

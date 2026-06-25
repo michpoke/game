@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://djypkea3j4ebp"]
+
+[ext_resource type="Script" uid="uid://ecbtoinab68f" path="res://scenes/posts/postfeed.gd" id="1_ygsb7"]
+[ext_resource type="PackedScene" uid="uid://c3bq073yvf7rt" path="res://scenes/posts/textpost.tscn" id="2_8dexm"]
+[ext_resource type="PackedScene" uid="uid://v2qwrgyp2t0n" path="res://scenes/posts/imagepost.tscn" id="3_y4qwl"]
+[ext_resource type="PackedScene" uid="uid://dysleymbtjbu1" path="res://scenes/posts/askpost.tscn" id="4_ju78l"]
+
+[node name="Postfeed" type="Control" unique_id=442629284]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -531.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ygsb7")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1937956247]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=910363786]
+layout_mode = 2
+theme_override_constants/separation = 620
+
+[node name="Textpost" parent="ScrollContainer/VBoxContainer" unique_id=787249726 instance=ExtResource("2_8dexm")]
+layout_mode = 2
+
+[node name="Imagepost" parent="ScrollContainer/VBoxContainer" unique_id=1752048816 instance=ExtResource("3_y4qwl")]
+layout_mode = 2
+
+[node name="Askpost" parent="ScrollContainer/VBoxContainer" unique_id=1895856752 instance=ExtResource("4_ju78l")]
+layout_mode = 2

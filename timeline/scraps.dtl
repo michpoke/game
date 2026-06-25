@@ -1,0 +1,32 @@
+join blue (neutral) center
+set {blue_base} = "base_hands_on_hips"
+join kai (exhasperated) center
+kai: wow. nice room.
+set {blue_base} = "base_crossarm"
+blue (displeased): [pause=0.4]........yeah, uh. sorry, i guess. i tried to, you know, clean it up for you a little.
+kai: This is 'cleaned up'?
+kai: There are literally ants crawling all over your nightstand.
+kai (confident_evil): And--oh. Wait. Don't look down.
+blue (confused_worried): what why why shouldn't i look. [pause=1.2] wait dude why shouldnt i look i dont see anything. dude
+kai: spider right by your foot
+blue (shocked): [font_size=90][b]A[/b][/font_size]
+blue (shocked): [font_size=40][b][shake rate=20.0 level=2]holy shit please kill it please please please[/b][/font_size]
+kai (smug): [lspeed=0.3]......................
+blue (displeased): .....
+blue (neutral): uhhhhhhhhhhhhhhhhhhhhhh. [pause=1.7] so like i guess like
+blue (neutral): on a philosophical level [pause=0.8] i just don't really believe in, [pause=0.4] like, [pause=1.0] killing ... living things?
+set {kai_emanata} = "weary_sweat"
+kai (silly_confused): ....
+kai: <Empty Text Event>
+blue: actually?  [pause=0.7][portrait=suggestive] they do.
+update kai (angry)
+kai: ...
+kai (angry): i can't imagine anyone coming in willingly to this shithole.
+blue: doesn't seem like you have to imagine it, though?
+kai: ...?
+blue (suggestive_mouth_closed): [lspeed=0.1][wave amp=25.0]kiiiiinda[/wave] [lspeed=0.05]seems like you're, like? standing in my shithole? [pause=0.3] right now?
+set {kai_emanata} = "blush_sweat"
+kai (very_angry): [lspeed=0.3]........
+blue: by the way, do you want, like, a beer?
+set {kai_emanata_animated} = "woozy"
+set {kai_emanata} = "blush_sweat"

@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bso76iosm5no3"]
+
+[ext_resource type="Script" uid="uid://dpgqdamr7ydn1" path="res://scenes/start_script.gd" id="1_lq5n3"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="2_logsb"]
+[ext_resource type="PackedScene" uid="uid://exl51vvhi821" path="res://scenes/menu_overlay.tscn" id="3_logsb"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="3_u6wke"]
+[ext_resource type="Texture2D" uid="uid://dj2rph78yes82" path="res://assets/background/f9f627552d2edde9f7b1b6ae09462359.png" id="4_86mhu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gu1vc"]
+shader = ExtResource("2_logsb")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.87
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("3_u6wke")
+shader_parameter/light_color = Color(0.3180199, 0.31801978, 0.31801957, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[node name="Control" type="Control" unique_id=1284238181]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="start_script" type="Node" parent="." unique_id=281814113]
+script = ExtResource("1_lq5n3")
+
+[node name="blues_room" type="TextureRect" parent="." unique_id=1275522369]
+material = SubResource("ShaderMaterial_gu1vc")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_86mhu")
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuOverlay" parent="." unique_id=508781416 instance=ExtResource("3_logsb")]

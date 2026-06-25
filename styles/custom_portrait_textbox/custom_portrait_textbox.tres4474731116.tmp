@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DialogicStyle" format=3 uid="uid://cvvi47ncxr3su"]
+
+[ext_resource type="Script" uid="uid://bwg6yncmh2cml" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="1_fbemi"]
+[ext_resource type="PackedScene" uid="uid://bxu1c0nnvllhr" path="res://styles/custom_portrait_textbox/CustomCustomPortraitTextbox/custom_custom_portrait_textbox.tscn" id="1_yntj1"]
+[ext_resource type="Script" uid="uid://dv08k6ljua6fm" path="res://addons/dialogic/Resources/dialogic_style.gd" id="2_yi6sd"]
+
+[sub_resource type="Resource" id="Resource_yi6sd"]
+script = ExtResource("1_fbemi")
+scene = ExtResource("1_yntj1")
+
+[resource]
+script = ExtResource("2_yi6sd")
+name = "custom_portrait_textbox"
+layer_info = {
+"": SubResource("Resource_yi6sd")
+}
+metadata/_latest_layer = ""

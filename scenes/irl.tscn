@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://gygq2mpmo7dx"]
+
+[ext_resource type="Texture2D" uid="uid://del22lnwvh5to" path="res://assets/background/firefox_eV94zNnVhP.png" id="2_5phge"]
+[ext_resource type="Script" uid="uid://cwkhxkqc5i1bj" path="res://scenes/node.gd" id="3_ha87o"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="3_yow30"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="4_yow30"]
+[ext_resource type="PackedScene" uid="uid://exl51vvhi821" path="res://scenes/menu_overlay.tscn" id="5_yow30"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pa4f8"]
+shader = ExtResource("3_yow30")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.05
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("4_yow30")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0.12955844, 0.12955847, 0.12955844, 1)
+shader_parameter/is_inverted = false
+
+[node name="Irl" type="Control" unique_id=1822681216]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="start_script" type="Node" parent="." unique_id=1086209973]
+script = ExtResource("3_ha87o")
+
+[node name="background" type="TextureRect" parent="." unique_id=1808633936]
+z_index = -10
+material = SubResource("ShaderMaterial_pa4f8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5phge")
+
+[node name="MenuOverlay" parent="." unique_id=508781416 instance=ExtResource("5_yow30")]

@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://c3bq073yvf7rt"]
+
+[ext_resource type="Script" uid="uid://buyvinsyslt37" path="res://scenes/posts/textpost.gd" id="1_go5nq"]
+[ext_resource type="Texture2D" uid="uid://pf4n0n87ccc8" path="res://assets/icons/bunny_small.png" id="3_8vj20"]
+[ext_resource type="Theme" uid="uid://cg5dh8drc6tv8" path="res://themes/tumblr_text.tres" id="3_t5yvn"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="4_ve25t"]
+[ext_resource type="Texture2D" uid="uid://baejot3ek3ay0" path="res://assets/gui/rectangle1.png" id="5_slfx2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f2cgq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ak2pc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8vj20"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t5yvn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ve25t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_slfx2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3q6tl"]
+
+[node name="Textpost" type="Control" unique_id=787249726]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_go5nq")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1715995460]
+z_index = -3
+material = ExtResource("4_ve25t")
+layout_mode = 0
+offset_top = -8.0
+offset_right = 603.0
+offset_bottom = 582.0
+texture = ExtResource("5_slfx2")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect" unique_id=869624128]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9197891
+anchor_bottom = 0.9896907
+offset_right = 45.367188
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/MarginContainer" unique_id=444786847]
+layout_mode = 2
+theme_override_constants/separation = 31
+
+[node name="user" type="HBoxContainer" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1938994211]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/MarginContainer/VBoxContainer/user" unique_id=848614269]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="NinePatchRect/MarginContainer/VBoxContainer/user/MarginContainer" unique_id=1703393395]
+material = ExtResource("4_ve25t")
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "some kind of username"
+icon = ExtResource("3_8vj20")
+flat = true
+
+[node name="title" type="MarginContainer" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1613996663]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect/MarginContainer/VBoxContainer/title" unique_id=2057231303]
+layout_mode = 2
+theme = ExtResource("3_t5yvn")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/selection_color = Color(0.1, 0.1, 1, 0.8)
+text = "title...."
+fit_content = true
+
+[node name="body text" type="MarginContainer" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1026207612]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = -18
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect/MarginContainer/VBoxContainer/body text" unique_id=621703246]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "my body text..................... is so long....................................................................................................................................................................................."
+
+[node name="tags" type="HBoxContainer" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1867801022]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect/MarginContainer/VBoxContainer/tags" unique_id=410758399]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.61339027, 0.61339027, 0.61339027, 1)
+theme_override_font_sizes/normal_font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_f2cgq")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ak2pc")
+text = "#i just like #man #what are we doing"
+vertical_alignment = 2
+
+[node name="notes" type="Button" parent="NinePatchRect/MarginContainer/VBoxContainer/tags" unique_id=1953752925]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("3_t5yvn")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8vj20")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_t5yvn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ve25t")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_slfx2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_3q6tl")
+text = "24,000 notes"
+alignment = 2

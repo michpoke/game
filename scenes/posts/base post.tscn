@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://dg5nbxgtvacbb"]
+
+[ext_resource type="Script" uid="uid://buyvinsyslt37" path="res://scenes/posts/textpost.gd" id="1_c0r4c"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="2_1ysal"]
+[ext_resource type="Texture2D" uid="uid://baejot3ek3ay0" path="res://assets/gui/rectangle1.png" id="3_0t000"]
+[ext_resource type="Texture2D" uid="uid://pf4n0n87ccc8" path="res://assets/icons/bunny_small.png" id="4_6kply"]
+[ext_resource type="Theme" uid="uid://cg5dh8drc6tv8" path="res://themes/tumblr_text.tres" id="5_3wg3r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r12f1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iu1mn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0n37s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jegi6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_anmqh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05p1e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rl5cd"]
+
+[node name="BasePost" type="Control" unique_id=787249726]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c0r4c")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1715995460]
+z_index = -3
+material = ExtResource("2_1ysal")
+layout_mode = 0
+offset_top = -8.0
+offset_right = 603.0
+offset_bottom = 582.0
+texture = ExtResource("3_0t000")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect" unique_id=869624128]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9197891
+anchor_bottom = 0.9896907
+offset_right = 45.367188
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+metadata/_edit_use_anchors_ = true
+
+[node name="post" type="VBoxContainer" parent="NinePatchRect/MarginContainer" unique_id=444786847]
+layout_mode = 2
+theme_override_constants/separation = 31
+
+[node name="header" type="MarginContainer" parent="NinePatchRect/MarginContainer/post" unique_id=1316839782]
+layout_mode = 2
+
+[node name="user" type="HBoxContainer" parent="NinePatchRect/MarginContainer/post/header" unique_id=1938994211]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/MarginContainer/post/header/user" unique_id=848614269]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="NinePatchRect/MarginContainer/post/header/user/MarginContainer" unique_id=1703393395]
+material = ExtResource("2_1ysal")
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "some kind of username"
+icon = ExtResource("4_6kply")
+flat = true
+
+[node name="post contents" type="VBoxContainer" parent="NinePatchRect/MarginContainer/post" unique_id=1824194759]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="tags" type="HBoxContainer" parent="NinePatchRect/MarginContainer/post" unique_id=1867801022]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NinePatchRect/MarginContainer/post/tags" unique_id=410758399]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.61339027, 0.61339027, 0.61339027, 1)
+theme_override_font_sizes/normal_font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_r12f1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_iu1mn")
+text = "#i just like #man #what are we doing"
+vertical_alignment = 2
+
+[node name="notes" type="Button" parent="NinePatchRect/MarginContainer/post/tags" unique_id=1953752925]
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("5_3wg3r")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxEmpty_0n37s")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_jegi6")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_anmqh")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_05p1e")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_rl5cd")
+text = "24,000 notes"
+alignment = 2

@@ -1,0 +1,6 @@
+[gd_resource type="Theme" format=3 uid="uid://b0j2ap2uw6kjv"]
+
+[ext_resource type="FontFile" uid="uid://bdeptcmutijon" path="res://assets/text/HelveticaNeueLight.otf" id="1_1l2pa"]
+
+[resource]
+default_font = ExtResource("1_1l2pa")

@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://l76wawtln16v"]
+
+[ext_resource type="Texture2D" uid="uid://detg7w4lhfmrm" path="res://assets/portraits/kai/emanata_dizzy/emanata_dizzy_1.png" id="1_2xuqi"]
+[ext_resource type="Texture2D" uid="uid://cifrb8d6ufgi0" path="res://assets/portraits/kai/emanata_dizzy/emanata_dizzy_2.png" id="2_anuyi"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_2xuqi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_anuyi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]

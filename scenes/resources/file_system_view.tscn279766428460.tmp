@@ -1,0 +1,307 @@
+[gd_scene format=3 uid="uid://bvym4yuikgx7k"]
+
+[ext_resource type="Script" uid="uid://dsub5vjr4brjn" path="res://scenes/resources/file_system_view.gd" id="1_p7046"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="2_dwked"]
+[ext_resource type="Texture2D" uid="uid://bu7fwrnyjaig" path="res://assets/windows/asset_desktopwindows2.png" id="3_h1g7j"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="4_dsxq0"]
+[ext_resource type="Texture2D" uid="uid://b3cdpthgqtgr8" path="res://assets/gui/arrow_black.png" id="5_kqp78"]
+[ext_resource type="Texture2D" uid="uid://bhbwrncx26gye" path="res://assets/icons/folder_75px.png" id="6_bus32"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="6_h1g7j"]
+[ext_resource type="Texture2D" uid="uid://cpv607u14pgon" path="res://assets/windows/type here.png" id="7_dg5wb"]
+
+[sub_resource type="Shader" id="Shader_s3v2b"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+// ── Squiggle uniforms ──────────────────────────────────────────────
+group_uniforms Squiggle;
+uniform vec2 scale = vec2(1.0, 1.0);
+uniform float strength = 1.0;
+uniform float fps = 6.0;
+uniform sampler2D noise : filter_linear, repeat_enable;
+group_uniforms;
+
+// ── Dither uniforms ────────────────────────────────────────────────
+group_uniforms Dither;
+uniform vec4 light_color : source_color;
+uniform vec4 dark_color  : source_color;
+uniform bool is_inverted;
+group_uniforms;
+
+// ── Bayer 8x8 matrix (unchanged from your original) ───────────────
+struct Array8 { float[8] col; };
+const Array8 m8c1 = Array8({0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375});
+const Array8 m8c2 = Array8({0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375});
+const Array8 m8c3 = Array8({0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375});
+const Array8 m8c4 = Array8({0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375});
+const Array8 m8c5 = Array8({0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125});
+const Array8 m8c6 = Array8({0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125});
+const Array8 m8c7 = Array8({0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125});
+const Array8 m8c8 = Array8({0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125});
+const Array8[8] BAYER_8x8 = {m8c1, m8c2, m8c3, m8c4, m8c5, m8c6, m8c7, m8c8};
+const float matrix_size = 8.0;
+
+// ── Vertex (squiggle only — dither doesn't need vertex stage) ──────
+varying vec4 modulate;
+varying vec2 noise_uv;
+
+void vertex() {
+    modulate = COLOR;
+    noise_uv = (VERTEX - MODEL_MATRIX[3].xy) / (vec2(textureSize(noise, 0)) * scale);
+}
+
+#define offset_multiplier vec2(PI, E)
+
+void fragment() {
+    // ── Step 1: wobbly UV distortion ──────────────────────────────
+    vec2 noise_offset = vec2(floor(TIME * fps)) * offset_multiplier;
+    float noise_sample = texture(noise, noise_uv + noise_offset).r * 4.0 * PI;
+    vec2 direction = vec2(cos(noise_sample), sin(noise_sample));
+    vec2 squiggle_uv = UV + direction * strength * 0.005;
+
+    // ── Step 2: sample texture at distorted UV ────────────────────
+    COLOR = texture(TEXTURE, squiggle_uv) * modulate;
+
+    // ── Step 3: gamma correction ──────────────────────────────────
+    vec3 linear = pow(COLOR.rgb, vec3(2.2));
+    COLOR.rgb = linear;
+
+    // ── Step 4: convert to grayscale (luma) ───────────────────────
+    float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+
+    // ── Step 5: bayer dither ──────────────────────────────────────
+    vec2 bayer = mod(vec2(FRAGCOORD.xy), vec2(matrix_size));
+    vec3 new_color;
+
+    if (is_inverted) {
+        new_color = step(1.0 - BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    } else {
+        new_color = step(BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    }
+
+    // ── Step 6: apply palette ─────────────────────────────────────
+    COLOR.rgb = (new_color == vec3(1.0)) ? light_color.rgb : dark_color.rgb;
+
+    // preserve original alpha (so transparent areas stay transparent)
+    COLOR.a = texture(TEXTURE, squiggle_uv).a * modulate.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_20rqb"]
+resource_local_to_scene = true
+shader = SubResource("Shader_s3v2b")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.37
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_dwked")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjljh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxq0"]
+shader = ExtResource("6_h1g7j")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 1.3
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_dwked")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = false
+
+[node name="FileSystemView" type="Control" unique_id=1506546786]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p7046")
+
+[node name="background" type="NinePatchRect" parent="." unique_id=1887139162]
+z_index = 3
+material = SubResource("ShaderMaterial_20rqb")
+custom_minimum_size = Vector2(480, 200)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.038580295
+anchor_right = 0.5329861
+anchor_bottom = 0.7947531
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_h1g7j")
+patch_margin_left = 200
+patch_margin_top = 120
+patch_margin_right = 200
+patch_margin_bottom = 120
+
+[node name="closebuttoncontainer" type="MarginContainer" parent="background" unique_id=2098756414]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -58.0
+offset_right = -19.0
+offset_bottom = 35.99997
+grow_horizontal = 0
+
+[node name="closebutton" type="Button" parent="background/closebuttoncontainer" unique_id=715658821]
+z_index = 10
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_stretch_ratio = 109.6
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_fjljh")
+alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="background" unique_id=1337870941]
+clip_contents = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.017453292
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 110
+
+[node name="ArrowContainerDown" type="MarginContainer" parent="background/MarginContainer" unique_id=544820286]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="ScrollHintArrow" type="TextureRect" parent="background/MarginContainer/ArrowContainerDown" unique_id=282467144]
+z_index = 2
+material = ExtResource("4_dsxq0")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("5_kqp78")
+stretch_mode = 2
+
+[node name="ArrowContainerUp" type="MarginContainer" parent="background/MarginContainer" unique_id=683159583]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="ScrollHintArrow" type="TextureRect" parent="background/MarginContainer/ArrowContainerUp" unique_id=1732578804]
+z_index = 2
+material = ExtResource("4_dsxq0")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("5_kqp78")
+stretch_mode = 2
+flip_v = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="background/MarginContainer" unique_id=1790496373]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="background/MarginContainer/ScrollContainer" unique_id=2018401536]
+material = SubResource("ShaderMaterial_dsxq0")
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/h_separation = 23
+theme_override_constants/v_separation = 11
+columns = 5
+
+[node name="icon" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=759165705]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon2" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=109438421]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon3" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=99565010]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon4" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=218485036]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon5" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1968075644]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon6" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1449097947]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon7" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1697825462]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon8" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1016308532]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon9" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1944373559]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="icon10" type="TextureRect" parent="background/MarginContainer/ScrollContainer/GridContainer" unique_id=1890139400]
+use_parent_material = true
+layout_mode = 2
+texture = ExtResource("6_bus32")
+stretch_mode = 2
+
+[node name="replybox" type="TextureRect" parent="background" unique_id=1656703483]
+use_parent_material = true
+custom_minimum_size = Vector2(480, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -243.0
+offset_top = -106.0
+offset_right = 238.85876
+offset_bottom = -63.80194
+grow_horizontal = 2
+grow_vertical = 0
+rotation = 0.017453292
+texture = ExtResource("7_dg5wb")
+expand_mode = 1
+
+[node name="fullscreenbuttoncontainer" type="MarginContainer" parent="background" unique_id=1578335238]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 5.9999695
+offset_right = -88.0
+offset_bottom = 34.99997
+grow_horizontal = 0
+
+[node name="fullscreenbutton" type="Button" parent="background/fullscreenbuttoncontainer" unique_id=176622301]
+layout_mode = 2

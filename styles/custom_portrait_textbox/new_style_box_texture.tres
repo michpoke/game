@@ -1,0 +1,6 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://7wfista2w0uf"]
+
+[ext_resource type="Texture2D" uid="uid://dwmplbchpkwhd" path="res://assets/text/irl_text/kai_talking.png" id="1_156ha"]
+
+[resource]
+texture = ExtResource("1_156ha")

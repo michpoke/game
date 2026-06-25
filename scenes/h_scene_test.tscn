@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://0lhkfyrjfj0s"]
+
+[ext_resource type="Script" uid="uid://cwkhxkqc5i1bj" path="res://scenes/node.gd" id="1_fjap8"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="2_oy48d"]
+[ext_resource type="Texture2D" uid="uid://chjlgwtnfqdke" path="res://assets/background/bathroom_sample.jpg" id="3_f6aty"]
+[ext_resource type="PackedScene" uid="uid://exl51vvhi821" path="res://scenes/menu_overlay.tscn" id="4_tkoyq"]
+
+[node name="Control" type="Control" unique_id=1343702986]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="start_script" type="Node" parent="." unique_id=2083414906]
+script = ExtResource("1_fjap8")
+
+[node name="blues_room" type="TextureRect" parent="." unique_id=558581975]
+material = ExtResource("2_oy48d")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_f6aty")
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuOverlay" parent="." unique_id=508781416 instance=ExtResource("4_tkoyq")]

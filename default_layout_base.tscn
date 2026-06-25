@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b6folf0ph302w"]
+
+[ext_resource type="Script" uid="uid://yivwmkfwrvfr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_Default/default_layout_base.gd" id="1_r71o4"]
+
+[node name="DefaultLayoutBase" type="CanvasLayer" unique_id=1885283769]
+script = ExtResource("1_r71o4")

@@ -1,0 +1,241 @@
+[gd_scene format=3 uid="uid://dakwlww4dixln"]
+
+[ext_resource type="Script" uid="uid://c7umf73d6v4bo" path="res://scenes/resources/text_window.gd" id="1_i22hg"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="2_hif3a"]
+[ext_resource type="Texture2D" uid="uid://bu7fwrnyjaig" path="res://assets/windows/asset_desktopwindows2.png" id="3_824e5"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="4_nv6xr"]
+[ext_resource type="Texture2D" uid="uid://bwfybpb6uvsjc" path="res://assets/transparent_pixel.png" id="6_utxai"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="7_hif3a"]
+[ext_resource type="Texture2D" uid="uid://b3cdpthgqtgr8" path="res://assets/gui/arrow_black.png" id="7_mhdl5"]
+[ext_resource type="FontFile" uid="uid://dat2gthm4uhbp" path="res://assets/fonts/static/Newsreader_60pt-Medium.ttf" id="8_hif3a"]
+
+[sub_resource type="Shader" id="Shader_s3v2b"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+// ── Squiggle uniforms ──────────────────────────────────────────────
+group_uniforms Squiggle;
+uniform vec2 scale = vec2(1.0, 1.0);
+uniform float strength = 1.0;
+uniform float fps = 6.0;
+uniform sampler2D noise : filter_linear, repeat_enable;
+group_uniforms;
+
+// ── Dither uniforms ────────────────────────────────────────────────
+group_uniforms Dither;
+uniform vec4 light_color : source_color;
+uniform vec4 dark_color  : source_color;
+uniform bool is_inverted;
+group_uniforms;
+
+// ── Bayer 8x8 matrix (unchanged from your original) ───────────────
+struct Array8 { float[8] col; };
+const Array8 m8c1 = Array8({0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375});
+const Array8 m8c2 = Array8({0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375});
+const Array8 m8c3 = Array8({0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375});
+const Array8 m8c4 = Array8({0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375});
+const Array8 m8c5 = Array8({0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125});
+const Array8 m8c6 = Array8({0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125});
+const Array8 m8c7 = Array8({0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125});
+const Array8 m8c8 = Array8({0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125});
+const Array8[8] BAYER_8x8 = {m8c1, m8c2, m8c3, m8c4, m8c5, m8c6, m8c7, m8c8};
+const float matrix_size = 8.0;
+
+// ── Vertex (squiggle only — dither doesn't need vertex stage) ──────
+varying vec4 modulate;
+varying vec2 noise_uv;
+
+void vertex() {
+    modulate = COLOR;
+    noise_uv = (VERTEX - MODEL_MATRIX[3].xy) / (vec2(textureSize(noise, 0)) * scale);
+}
+
+#define offset_multiplier vec2(PI, E)
+
+void fragment() {
+    // ── Step 1: wobbly UV distortion ──────────────────────────────
+    vec2 noise_offset = vec2(floor(TIME * fps)) * offset_multiplier;
+    float noise_sample = texture(noise, noise_uv + noise_offset).r * 4.0 * PI;
+    vec2 direction = vec2(cos(noise_sample), sin(noise_sample));
+    vec2 squiggle_uv = UV + direction * strength * 0.005;
+
+    // ── Step 2: sample texture at distorted UV ────────────────────
+    COLOR = texture(TEXTURE, squiggle_uv) * modulate;
+
+    // ── Step 3: gamma correction ──────────────────────────────────
+    vec3 linear = pow(COLOR.rgb, vec3(2.2));
+    COLOR.rgb = linear;
+
+    // ── Step 4: convert to grayscale (luma) ───────────────────────
+    float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+
+    // ── Step 5: bayer dither ──────────────────────────────────────
+    vec2 bayer = mod(vec2(FRAGCOORD.xy), vec2(matrix_size));
+    vec3 new_color;
+
+    if (is_inverted) {
+        new_color = step(1.0 - BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    } else {
+        new_color = step(BAYER_8x8[int(bayer.x)].col[int(bayer.y)], vec3(gray));
+    }
+
+    // ── Step 6: apply palette ─────────────────────────────────────
+    COLOR.rgb = (new_color == vec3(1.0)) ? light_color.rgb : dark_color.rgb;
+
+    // preserve original alpha (so transparent areas stay transparent)
+    COLOR.a = texture(TEXTURE, squiggle_uv).a * modulate.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_17tuk"]
+resource_local_to_scene = true
+shader = SubResource("Shader_s3v2b")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.37
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_hif3a")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yvu3c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_824e5"]
+shader = ExtResource("7_hif3a")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.27
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_hif3a")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true
+
+[node name="TextWindow" type="Control" unique_id=372876636]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i22hg")
+
+[node name="background" type="NinePatchRect" parent="." unique_id=518850386]
+z_index = 3
+material = SubResource("ShaderMaterial_17tuk")
+custom_minimum_size = Vector2(480, 200)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.038580295
+anchor_right = 0.5329861
+anchor_bottom = 0.7947531
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_824e5")
+patch_margin_left = 200
+patch_margin_top = 120
+patch_margin_right = 200
+patch_margin_bottom = 120
+
+[node name="closebuttoncontainer" type="MarginContainer" parent="background" unique_id=556141673]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -58.0
+offset_right = -19.0
+offset_bottom = 35.99997
+grow_horizontal = 0
+
+[node name="closebutton" type="Button" parent="background/closebuttoncontainer" unique_id=213349837]
+z_index = 10
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_stretch_ratio = 109.6
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_yvu3c")
+alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="background" unique_id=927395798]
+clip_contents = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.013962634
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="ArrowContainerDown" type="MarginContainer" parent="background/MarginContainer" unique_id=329526595]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="ScrollHintArrow" type="TextureRect" parent="background/MarginContainer/ArrowContainerDown" unique_id=921662885]
+z_index = 2
+material = ExtResource("4_nv6xr")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("7_mhdl5")
+stretch_mode = 2
+
+[node name="ArrowContainerUp" type="MarginContainer" parent="background/MarginContainer" unique_id=1617841361]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="ScrollHintArrow" type="TextureRect" parent="background/MarginContainer/ArrowContainerUp" unique_id=911932407]
+z_index = 2
+material = ExtResource("4_nv6xr")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("7_mhdl5")
+stretch_mode = 2
+flip_v = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="background/MarginContainer" unique_id=2002982882]
+layout_mode = 2
+theme_override_icons/scroll_hint_vertical = ExtResource("6_utxai")
+vertical_scroll_mode = 3
+scroll_hint_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="background/MarginContainer/ScrollContainer" unique_id=1756420967]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="background/MarginContainer/ScrollContainer/VBoxContainer" unique_id=712263015]
+material = SubResource("ShaderMaterial_824e5")
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("8_hif3a")
+text = "i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate hei hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her so much.i hate her herr"
+fit_content = true
+scroll_active = false
+
+[node name="fullscreenbuttoncontainer" type="MarginContainer" parent="background" unique_id=139511713]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 5.9999695
+offset_right = -88.0
+offset_bottom = 34.99997
+grow_horizontal = 0
+
+[node name="fullscreenbutton" type="Button" parent="background/fullscreenbuttoncontainer" unique_id=390903502]
+layout_mode = 2
+
+[connection signal="pressed" from="background/closebuttoncontainer/closebutton" to="." method="_on_closebutton_pressed"]
+[connection signal="pressed" from="background/fullscreenbuttoncontainer/fullscreenbutton" to="." method="_on_fullscreenbutton_pressed"]

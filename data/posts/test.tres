@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PostData" format=3 uid="uid://1ywr6c71maka"]
+
+[ext_resource type="Script" uid="uid://dt0dqmp1faefp" path="res://resources/PostData.gd" id="1_cogyc"]
+
+[resource]
+script = ExtResource("1_cogyc")
+metadata/_custom_type_script = "uid://dt0dqmp1faefp"

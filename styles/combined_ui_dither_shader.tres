@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://crxggjvwvlyc"]
+
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="1_4a2i4"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="2_2f3sk"]
+
+[resource]
+shader = ExtResource("1_4a2i4")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 0.17
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("2_2f3sk")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = true

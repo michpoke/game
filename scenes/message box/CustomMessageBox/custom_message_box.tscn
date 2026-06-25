@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://css78f2du2n04"]
+
+[ext_resource type="Script" uid="uid://yivwmkfwrvfr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_Default/default_layout_base.gd" id="1_ifsho"]
+[ext_resource type="PackedScene" uid="uid://c1k5m0w3r40xf" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.tscn" id="2_i8xdv"]
+[ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="3_e5nqx"]
+[ext_resource type="PackedScene" uid="uid://cy1y14inwkplb" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.tscn" id="4_17euv"]
+[ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="4_hgd0i"]
+[ext_resource type="PackedScene" uid="uid://cn674foxwedqu" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Input/full_advance_input_layer.tscn" id="6_wmyeo"]
+[ext_resource type="PackedScene" uid="uid://bquja8jyk8kbr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/vn_textbox_layer.tscn" id="8_4cyxf"]
+[ext_resource type="PackedScene" uid="uid://dsbwnp5hegnu3" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Glossary/glossary_popup_layer.tscn" id="12_idqwn"]
+[ext_resource type="PackedScene" uid="uid://dhk6j6eb6e3q" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Choices/vn_choice_layer.tscn" id="14_74nrn"]
+[ext_resource type="PackedScene" uid="uid://cvgf4c6gg0tsy" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_TextInput/text_input_layer.tscn" id="16_d6a7n"]
+[ext_resource type="PackedScene" uid="uid://lx24i8fl6uo" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/history_layer.tscn" id="18_alhyq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5g6th"]
+shader = ExtResource("3_e5nqx")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/strength = 1.0
+shader_parameter/fps = 6.0
+shader_parameter/noise = ExtResource("4_hgd0i")
+shader_parameter/light_color = Color(1, 1, 1, 1)
+shader_parameter/dark_color = Color(0, 0, 0, 1)
+shader_parameter/is_inverted = false
+
+[node name="Custom" type="CanvasLayer" unique_id=753752605]
+script = ExtResource("1_ifsho")
+
+[node name="BackgroundLayer" parent="." unique_id=2124367372 instance=ExtResource("2_i8xdv")]
+disabled = true
+apply_overrides_on_ready = true
+
+[node name="VN_PortraitLayer" parent="." unique_id=515631868 instance=ExtResource("4_17euv")]
+disabled = true
+apply_overrides_on_ready = true
+
+[node name="FullAdvanceInputLayer" parent="." unique_id=1064874657 instance=ExtResource("6_wmyeo")]
+disabled = true
+apply_overrides_on_ready = true
+
+[node name="VN_TextboxLayer" parent="." unique_id=1887726035 instance=ExtResource("8_4cyxf")]
+material = SubResource("ShaderMaterial_5g6th")
+text_custom_color = Color(1, 1, 1, 0)
+box_color_custom = Color(0, 0, 0, 0)
+next_indicator_enabled = false
+apply_overrides_on_ready = true
+
+[node name="Glossary" parent="." unique_id=1386896027 instance=ExtResource("12_idqwn")]
+disabled = true
+apply_overrides_on_ready = true
+
+[node name="VN_ChoiceLayer" parent="." unique_id=1029247933 instance=ExtResource("14_74nrn")]
+font_size_custom = 10
+apply_overrides_on_ready = true
+
+[node name="TextInputLayer" parent="." unique_id=1248066351 instance=ExtResource("16_d6a7n")]
+disabled = true
+apply_overrides_on_ready = true
+
+[node name="ExampleHistoryScene" parent="." unique_id=750991238 instance=ExtResource("18_alhyq")]
+disabled = true
+apply_overrides_on_ready = true
