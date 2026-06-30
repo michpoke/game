@@ -1,3 +1,4 @@
+[style name="custom_portrait_textbox"]
 join blue (neutral) center
 set {blue_base} = "base_hands_on_hips"
 join kai (exhasperated) center
@@ -15,8 +16,7 @@ kai (smug): [lspeed=0.3]......................
 blue (displeased): .....
 blue (neutral): uhhhhhhhhhhhhhhhhhhhhhh. [pause=1.7] so like i guess like
 blue (neutral): on a philosophical level [pause=0.8] i just don't really believe in, [pause=0.4] like, [pause=1.0] killing ... living things?
-set {kai_emanata} = "weary_sweat"
-kai (silly_confused): ....
+kai (confused): ....
 kai: <Empty Text Event>
 blue: actually?  [pause=0.7][portrait=suggestive] they do.
 update kai (angry)

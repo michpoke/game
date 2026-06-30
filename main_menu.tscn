@@ -2,12 +2,23 @@
 
 [ext_resource type="FontFile" uid="uid://cofov7t6epusu" path="res://assets/fonts/NotJamOldStyle14.ttf" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://c6m6xnyt2r3kt" path="res://main_menu.gd" id="1_7vrkn"]
+[ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="3_glbon"]
+[ext_resource type="Texture2D" uid="uid://cq3acerkgge31" path="res://assets/windows/asset_desktopwindows.png" id="4_nlkkf"]
+[ext_resource type="FontFile" uid="uid://cxc2x7ugssedi" path="res://assets/fonts/NotJamOldStyle11.ttf" id="5_qe12f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glbon"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7vrkn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_06t4h"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fu7sn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8qtwp"]
+texture = ExtResource("4_nlkkf")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dy7ct"]
 
 [node name="MainMenu" type="Control" unique_id=591971749]
 layout_mode = 3
@@ -18,15 +29,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7vrkn")
 
-[node name="Panel" type="Panel" parent="." unique_id=2101336344]
+[node name="BG" type="Panel" parent="." unique_id=2101336344]
+material = ExtResource("3_glbon")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glbon")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=501942275]
+[node name="MainButtons" type="VBoxContainer" parent="." unique_id=501942275]
+material = ExtResource("3_glbon")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -41,12 +55,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=1594933927]
+[node name="Button" type="Button" parent="MainButtons" unique_id=1594933927]
+material = ExtResource("3_glbon")
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.40784314, 0.44313726, 0.8745098, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8084553, 0.27287614, 0.30402398, 1)
+theme_override_colors/font_hover_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("1_06t4h")
 theme_override_font_sizes/font_size = 32
@@ -55,12 +70,13 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_06t4h")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_fu7sn")
 text = "START"
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=383124768]
+[node name="Button2" type="Button" parent="MainButtons" unique_id=383124768]
+material = ExtResource("3_glbon")
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.40784314, 0.44313726, 0.8745098, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8084553, 0.27287614, 0.30402398, 1)
+theme_override_colors/font_hover_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("1_06t4h")
 theme_override_font_sizes/font_size = 32
@@ -69,12 +85,13 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_06t4h")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_fu7sn")
 text = "SETTINGS"
 
-[node name="Button3" type="Button" parent="VBoxContainer" unique_id=865896321]
+[node name="Button3" type="Button" parent="MainButtons" unique_id=865896321]
+material = ExtResource("3_glbon")
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.40784314, 0.44313726, 0.8745098, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.8084553, 0.27287614, 0.30402398, 1)
+theme_override_colors/font_hover_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("1_06t4h")
 theme_override_font_sizes/font_size = 32
@@ -84,6 +101,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_fu7sn")
 text = "LEAVE"
 
 [node name="Label" type="Label" parent="." unique_id=1244977315]
+material = ExtResource("3_glbon")
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -95,10 +113,71 @@ offset_bottom = 242.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("1_06t4h")
 theme_override_font_sizes/font_size = 70
-text = "GAME TITLE"
+text = "KAI'S VERY BAD DAY"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_leave_pressed"]
+[node name="Settings" type="Panel" parent="." unique_id=660720291]
+visible = false
+material = ExtResource("3_glbon")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -335.0
+offset_top = -276.0
+offset_right = 332.0
+offset_bottom = 259.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_8qtwp")
+
+[node name="Label" type="Label" parent="Settings" unique_id=1494653527]
+material = ExtResource("3_glbon")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -102.75
+offset_top = 69.0
+offset_right = 102.75
+offset_bottom = 129.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("5_qe12f")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dy7ct")
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Button" parent="Settings" unique_id=2016800440]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.9110001
+anchor_top = 0.047000002
+anchor_right = 0.9110001
+anchor_bottom = 0.047000002
+offset_left = -13.637024
+offset_top = -16.145
+offset_right = 13.362976
+offset_bottom = 15.855
+size_flags_vertical = 3
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.40784314, 0.44313726, 0.8745098, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("1_06t4h")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_7vrkn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_06t4h")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fu7sn")
+
+[connection signal="pressed" from="MainButtons/Button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MainButtons/Button2" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MainButtons/Button3" to="." method="_on_leave_pressed"]
+[connection signal="pressed" from="Settings/Exit" to="." method="_on_exit_pressed"]

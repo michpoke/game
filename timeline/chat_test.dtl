@@ -1,4 +1,4 @@
-[style name="message box"]
+set {laptop} = false
 blue: i wanted
 blue: something else
 blue: i guess

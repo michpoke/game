@@ -3,9 +3,8 @@
 [ext_resource type="Script" uid="uid://3q0x1vcwlj4p" path="res://menu_overlay.gd" id="1_5n3t8"]
 [ext_resource type="Material" uid="uid://crxggjvwvlyc" path="res://styles/combined_ui_dither_shader.tres" id="2_5n3t8"]
 [ext_resource type="Shader" uid="uid://dpsgrltjhojls" path="res://assets/shaders/combined_dither_and_wobble.gdshader" id="2_chaoq"]
-[ext_resource type="FontFile" uid="uid://dat2gthm4uhbp" path="res://assets/fonts/static/Newsreader_60pt-Medium.ttf" id="3_7ffsb"]
 [ext_resource type="Texture2D" uid="uid://llsrkmei5bc2" path="res://assets/shaders/super perlin 2 - 512x512.png" id="3_8go2m"]
-[ext_resource type="FontFile" uid="uid://btrjlica28gqy" path="res://assets/fonts/static/Newsreader_60pt-Bold.ttf" id="4_uvs7j"]
+[ext_resource type="FontFile" uid="uid://cofov7t6epusu" path="res://assets/fonts/NotJamOldStyle14.ttf" id="4_8go2m"]
 [ext_resource type="Texture2D" uid="uid://btcvilduu1431" path="res://assets/background/blackborder.png" id="7_uvs7j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1mrgb"]
@@ -102,9 +101,10 @@ size_flags_vertical = 0
 material = SubResource("ShaderMaterial_1mrgb")
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 11
-theme_override_fonts/font = ExtResource("3_7ffsb")
-theme_override_font_sizes/font_size = 31
+theme_override_fonts/font = ExtResource("4_8go2m")
+theme_override_font_sizes/font_size = 33
 theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_aeywv")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_y4a0l")
@@ -133,8 +133,9 @@ size_flags_vertical = 4
 [node name="save" type="Button" parent="visible_space/Panel/menucontainer" unique_id=1767100208]
 material = SubResource("ShaderMaterial_8go2m")
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 15
-theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_fonts/font = ExtResource("4_8go2m")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ts1dl")
@@ -146,8 +147,9 @@ text = "save"
 [node name="load" type="Button" parent="visible_space/Panel/menucontainer" unique_id=1823447300]
 material = SubResource("ShaderMaterial_8go2m")
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 15
-theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_fonts/font = ExtResource("4_8go2m")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_1mrgb")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ts1dl")
@@ -160,8 +162,9 @@ text = "load
 [node name="quit" type="Button" parent="visible_space/Panel/menucontainer" unique_id=776459344]
 material = SubResource("ShaderMaterial_gtib3")
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 15
-theme_override_fonts/font = ExtResource("4_uvs7j")
+theme_override_fonts/font = ExtResource("4_8go2m")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxEmpty_826pb")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_xethm")
